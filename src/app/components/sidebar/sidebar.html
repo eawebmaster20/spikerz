@@ -1,0 +1,83 @@
+<aside
+  [ngClass]="opened ? 'w-64' : 'w-18'"
+  class="bg-white flex flex-col shadow py-6 px-2 transition-all duration-300 overflow-visible h-full relative rounded-tr-[12px] rounded-br-[12px] group"
+  (mouseenter)="asideHovered = true"
+  (mouseleave)="asideHovered = false"
+>
+  <button
+    (click)="opened = !opened"
+    [class]="opened || asideHovered ? 'bg-green-700' : ''"
+    class="absolute -right-4 transition-all duration-300 top-6 z-10 w-8 h-8 flex items-center justify-center rounded-full text-white"
+  >
+    <span class="material-icons">{{ opened ? 'chevron_left' : 'chevron_right' }}</span>
+  </button>
+  <nav class="flex flex-col flex-1">
+    <ul class="space-y-2">
+      @if (!opened) {
+      <li class="relative">
+        <img
+          class="flex items-center transition-all px-4 py-3 rounded-lg font-semibold"
+          src="logo.png"
+          alt="app logo"
+          srcset=""
+        />
+      </li>
+      } @for (item of tpMenuItems; track $index) {
+      <li class="relative">
+        <a
+          href="#"
+          class="flex gap-4 items-center px-4 py-3 rounded-lg text-gray-500 hover:bg-gray-100"
+          (mouseenter)="item.isActive = true"
+          (mouseleave)="item.isActive = false"
+        >
+          <span [innerHTML]="item.isActive ? item.iconActive : item.svgIcon"></span>
+          <span *ngIf="opened">{{ item.label }}</span>
+          <!-- Tooltip for collapsed sidebar -->
+          <div
+            *ngIf="!opened && item.isActive"
+            class="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1 rounded bg-green-50 text-green-900 text-xs shadow-lg z-50 whitespace-nowrap pointer-events-none"
+          >
+            {{ item.label }}
+          </div>
+        </a>
+      </li>
+      }
+    </ul>
+    <ul class="mt-auto space-y-2">
+      @for (item of btMenuItems; track $index) {
+      <li class="relative">
+        <a
+          href="#"
+          class="flex gap-4 items-center px-4 py-3 rounded-lg text-gray-500 hover:bg-gray-100"
+          (mouseenter)="item.isActive = true"
+          (mouseleave)="item.isActive = false"
+        >
+          <span [innerHTML]="item.isActive ? item.iconActive : item.svgIcon"></span>
+          <span *ngIf="opened">{{ item.label }}</span>
+          <div
+            *ngIf="!opened && item.isActive"
+            class="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1 rounded bg-green-50 text-green-900 text-xs shadow-lg z-50 whitespace-nowrap pointer-events-none"
+          >
+            {{ item.label }}
+          </div>
+        </a>
+      </li>
+      }
+    </ul>
+    <hr class="text-gray-200 my-4" />
+    <div class="flex flex-col gap-2">
+      <a href="#" class="flex items-center px-1 gap-2 rounded-lg text-gray-500 hover:bg-gray-100">
+        <div
+          [class]="opened ? 'w-12 h-12 transition-all duration-300' : 'w-10 h-10'"
+          class="rounded-full bg-gray-200 flex items-center justify-center"
+        >
+          <span class="material-icons-outlined">person</span>
+        </div>
+        @if (opened) {
+        <span>Lorem</span>
+        <span class="material-icons-outlined ml-auto">login</span>
+        }
+      </a>
+    </div>
+  </nav>
+</aside>
