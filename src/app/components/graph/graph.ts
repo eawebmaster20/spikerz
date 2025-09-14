@@ -136,7 +136,6 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
       gradient.append('stop').attr('offset', '100%').attr('stop-color', color!);
     });
 
-    // Create simulation
     // Custom force to keep siblings horizontally aligned and close
     const nodeRadius = this.finalConfig.nodeRadius || 40;
     function siblingAlignForce(alpha: number) {
@@ -226,48 +225,19 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
       .append('g')
       .style('cursor', 'pointer');
 
-    // For each node, check if it is a child (has parentId) and render accordingly
+    // Render each node as a single image if iconUrl is present, otherwise fallback to a default circle and icon
     nodeGroups.each((d: NetworkNode, i: number, nodes: any[]) => {
       const group = d3.select(nodes[i]);
-      if (d.parentId) {
-        // Find all siblings (children of the same parent)
-        const siblings = this.nodes.find((n) => n.id === d.parentId)?.children || [];
-        const idx = siblings.findIndex((child) => child.id === d.id);
-        const count = siblings.length;
-        // Calculate horizontal offset for justified layout
-        const spacing = this.finalConfig.nodeRadius! * 2.2;
-        const offset = (idx - (count - 1) / 2) * spacing;
-        group.attr('transform', `translate(${offset},0)`);
+      group.selectAll('*').remove();
+      if (d.iconUrl) {
         group
-          .append('circle')
-          .attr('r', this.finalConfig.nodeRadius! * 0.85)
-          .attr('fill', '#dbeafe')
-          .attr('stroke', 'none')
-          .attr('stroke-width', 0)
-          .style('filter', 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))');
-        group
-          .append('text')
-          .attr('text-anchor', 'middle')
-          .attr('dy', '0.35em')
-          .attr('fill', 'white')
-          .attr('font-size', '16px')
-          .style('pointer-events', 'none')
-          .text(this.getIcon(d.type));
-        group
-          .append('text')
-          .attr('text-anchor', 'middle')
-          .attr('y', this.finalConfig.nodeRadius! * 0.85 + 18)
-          .attr('fill', '#374151')
-          .attr('font-size', '12px')
-          .attr('font-weight', '600')
-          .style('pointer-events', 'none')
-          .text(d.label);
-      } else if (d.children && d.children.length === 2) {
-        // Compound node: draw invisible anchor, and visually group children
-        group.append('circle').attr('r', 8).attr('fill', 'transparent');
-        // Optionally, draw a bounding box or connector lines between children
+          .append('image')
+          .attr('xlink:href', d.iconUrl)
+          .attr('x', -this.finalConfig.nodeRadius!)
+          .attr('y', -this.finalConfig.nodeRadius!)
+          .attr('width', this.finalConfig.nodeRadius! * 2)
+          .attr('height', this.finalConfig.nodeRadius! * 2);
       } else {
-        // Single node (default)
         group
           .append('circle')
           .attr('r', this.finalConfig.nodeRadius!)
@@ -283,109 +253,40 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
           .attr('font-size', '18px')
           .style('pointer-events', 'none')
           .text(this.getIcon(d.type));
+      }
+
+      // Add label below the node (image or circle)
+      group
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .attr('y', this.finalConfig.nodeRadius! + 18)
+        .attr('fill', '#374151')
+        .attr('font-size', '14px')
+        .attr('font-weight', '600')
+        .style('pointer-events', 'none')
+        .text(d.label);
+
+      // Add sublabel below the main label if present
+      if (d.sublabel) {
         group
           .append('text')
           .attr('text-anchor', 'middle')
-          .attr('y', this.finalConfig.nodeRadius! + 20)
-          .attr('fill', '#374151')
-          .attr('font-size', '14px')
-          .attr('font-weight', '600')
+          .attr('y', this.finalConfig.nodeRadius! + 34)
+          .attr('fill', '#6b7280')
+          .attr('font-size', '11px')
           .style('pointer-events', 'none')
-          .text(d.label);
+          .text(d.sublabel);
       }
+
+      // Add hover event listeners for hover card
+      group
+        .on('mouseover', (event: any) => {
+          this.showHoverCard(event, d);
+        })
+        .on('mouseout', () => {
+          this.hideHoverCard();
+        });
     });
-
-    // Add main circles
-    nodeGroups
-      .append('circle')
-      .attr('r', this.finalConfig.nodeRadius!)
-      .attr('fill', '#dbeafe') // Tailwind bg-blue-100
-      .attr('stroke', 'none')
-      .attr('stroke-width', 0)
-      .style('filter', 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))')
-      .on('mouseover', (event: any, d: NetworkNode) => {
-        // Scale up the node
-        d3.select(event.currentTarget)
-          .transition()
-          .duration(200)
-          .attr('r', this.finalConfig.nodeRadius! * 1.1)
-          .style('filter', 'drop-shadow(0 6px 16px rgba(0,0,0,0.25))');
-
-        this.showHoverCard(event, d);
-      })
-      .on('mouseout', (event: any) => {
-        d3.select(event.currentTarget)
-          .transition()
-          .duration(200)
-          .attr('r', this.finalConfig.nodeRadius!)
-          .style('filter', 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))');
-
-        this.hideHoverCard();
-      });
-
-    // Add highlight circles for depth effect
-    nodeGroups
-      .append('circle')
-      .attr('r', this.finalConfig.nodeRadius! * 0.7)
-      .attr('fill', 'rgba(255,255,255,0.2)')
-      .style('pointer-events', 'none');
-
-    // Add icons
-    nodeGroups
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '0.35em')
-      .attr('fill', 'white')
-      .attr('font-size', '18px')
-      .style('pointer-events', 'none')
-      .text((d: NetworkNode) => this.getIcon(d.type));
-
-    // Add labels below nodes
-    nodeGroups
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('y', this.finalConfig.nodeRadius! + 20)
-      .attr('fill', '#374151')
-      .attr('font-size', '14px')
-      .attr('font-weight', '600')
-      .style('pointer-events', 'none')
-      .text((d: NetworkNode) => d.label);
-
-    // Add sublabels (like IP addresses)
-    nodeGroups
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('y', this.finalConfig.nodeRadius! + 35)
-      .attr('fill', '#6b7280')
-      .attr('font-size', '11px')
-      .style('pointer-events', 'none')
-      .text((d: NetworkNode) => d.sublabel || '');
-
-    // Add warning badges for nodes with warnings
-    const warningGroups = nodeGroups
-      .filter((d: NetworkNode) => d.hasWarning)
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${this.finalConfig.nodeRadius! * 0.7}, ${-this.finalConfig.nodeRadius! * 0.7})`
-      );
-
-    warningGroups
-      .append('circle')
-      .attr('r', 10)
-      .attr('fill', this.finalConfig.colors!.warning!)
-      .attr('stroke', 'white')
-      .attr('stroke-width', 2)
-      .style('filter', 'drop-shadow(0 2px 4px rgba(239,68,68,0.3))');
-
-    warningGroups
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '0.35em')
-      .attr('fill', 'white')
-      .attr('font-size', '10px')
-      .attr('font-weight', 'bold')
-      .text('!');
 
     // Add drag behavior
     const drag = d3

@@ -10,6 +10,7 @@ export interface NetworkNode {
   // For compound nodes (two elements)
   children?: NetworkNode[];
   parentId?: string; // for flattened children
+  iconUrl?: string; // URL for image-based node icon
 }
 
 export interface NetworkLink {
