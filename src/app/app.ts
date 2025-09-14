@@ -1,15 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatSidenavModule } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
-import { AppGraphComponent, NetworkConfig, NetworkLink, NetworkNode } from './app-graph.component';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Sidebar } from './components/sidebar/sidebar';
+import { Graph } from './components/graph/graph';
+import { NetworkConfig, NetworkLink, NetworkNode } from './shared/interface/graph';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, AppGraphComponent, Sidebar],
+  imports: [CommonModule, Graph, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
