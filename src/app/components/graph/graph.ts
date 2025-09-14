@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import * as d3 from 'd3';
 import { FormsModule } from '@angular/forms';
-import { NetworkConfig, NetworkLink, NetworkNode } from '../../shared/interface/graph';
+import { NetworkNode } from '../../shared/interface/graph';
 
 @Component({
   selector: 'app-graph',
@@ -23,8 +23,8 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
   @ViewChild('container', { static: true }) private containerElement!: ElementRef<HTMLElement>;
 
   @Input() nodes: NetworkNode[] = [];
-  @Input() links: NetworkLink[] = [];
-  @Input() config: NetworkConfig = {};
+  @Input() links: any[] = [];
+  @Input() config: any = {};
   @Input() width: number = 500;
   @Input() height: number = 350;
   @Input() title?: string;
@@ -36,7 +36,7 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
 
   private svg: any;
   private simulation: any;
-  private defaultConfig: NetworkConfig = {
+  private defaultConfig: any = {
     nodeRadius: 35,
     linkDistance: 180,
     chargeStrength: -1000,
@@ -70,7 +70,7 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private get finalConfig(): NetworkConfig {
+  private get finalConfig(): any {
     return {
       ...this.defaultConfig,
       ...this.config,
@@ -128,12 +128,17 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
         .attr('cx', '30%')
         .attr('cy', '30%');
 
+      // Only use d3.color if color is a string
+      let brightColor = typeof color === 'string' ? d3.color(color)?.brighter(0.5) : null;
       gradient
         .append('stop')
         .attr('offset', '0%')
-        .attr('stop-color', d3.color(color!)!.brighter(0.5));
+        .attr('stop-color', brightColor ? brightColor.toString() : (color as string));
 
-      gradient.append('stop').attr('offset', '100%').attr('stop-color', color!);
+      gradient
+        .append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', color as string);
     });
 
     // Custom force to keep siblings horizontally aligned and close

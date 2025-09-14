@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from './components/sidebar/sidebar';
 import { Graph } from './components/graph/graph';
-import { NetworkConfig, NetworkLink, NetworkNode } from './shared/interface/graph';
+import { NetworkNode } from './shared/interface/graph';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +24,30 @@ export class App {
       status: 'Active',
       iconUrl: 'graph/1.svg',
       details: { version: '2.1.0', uptime: '99.9%' },
+      hoverCardHtml: `
+  <div class="font-inter w-full block">
+        <div class="rounded-md bg-red-50 px-4 py-1 mb-2">
+          <span class="font-bold text-red-600">Lorem Ipsum Dolor Sit</span>
+        </div>
+
+        <div class="flex justify-end gap-1 mb-1 mr-4">
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+        </div>
+        <div class="flex mr-4 gap-1 justify-end">
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+          <span class="font-bold bg-red-50 p-1 rounded-md text-red-600">1.2.3.4</span>
+        </div>
+
+        <div class="rounded-md bg-indigo-50 px-4 py-1 mt-4 inline-block">
+          <span class="font-bold text-indigo-700">Lorem:
+            <span> 1.2.3.4</span>
+          </span>
+        </div>
+      </div>
+    `,
     },
     {
       id: 'api',
@@ -33,6 +57,25 @@ export class App {
       status: 'Healthy',
       iconUrl: 'graph/2.svg',
       details: { cpu: '45%', memory: '68%', requests: '1.2k/min' },
+      hoverCardHtml: `<div class="font-inter w-96">
+        <div class="flex align-center gap-2 mb-2">
+          <span class="inline-flex items-center p-3 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+            <span class="material-icons-outlined">dns</span>
+          </span>
+          <span class="text-gray-500 font-semibold flex items-center">Loremipsu</span>
+        </div>
+        <div class="flex font-bold mb-2">
+          <span class="material-icons-outlined text-gray-400 mr-2 whitespace-nowrap">article</span>
+          <span class="text-gray-500 whitespace-nowrap">Lorem: Loremipsum Loremipsum</span>
+          <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+        </div>
+        
+        <div class="flex font-bold">
+        <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+          <span class="text-gray-500 whitespace-nowrap">Lorem: Loremipsum Loremipsum</span>
+          <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+        </div>
+      </div>`,
     },
     {
       id: 'db',
@@ -44,6 +87,25 @@ export class App {
       status: 'Warning - High Load',
       iconUrl: 'graph/2.svg',
       details: { connections: '95/100', size: '2.3TB' },
+      hoverCardHtml: `<div class="font-inter w-96">
+        <div class="flex align-center gap-2 mb-2">
+          <span class="inline-flex items-center p-3 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+            <span class="material-icons-outlined">dns</span>
+          </span>
+          <span class="text-gray-500 font-semibold flex items-center">Loremipsu</span>
+        </div>
+        <div class="flex font-bold mb-2">
+          <span class="material-icons-outlined text-gray-400 mr-2 whitespace-nowrap">article</span>
+          <span class="text-gray-500 whitespace-nowrap">Lorem: Loremipsum Loremipsum</span>
+          <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+        </div>
+        
+        <div class="flex font-bold">
+        <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+          <span class="text-gray-500 whitespace-nowrap">Lorem: Loremipsum Loremipsum</span>
+          <span class="bg-voilet-50 text-blue-700 ml-2 px-2.5 rounded whitespace-nowrap">1.2.3.4</span>
+        </div>
+      </div>`,
     },
     {
       id: 'compound1',
@@ -75,14 +137,14 @@ export class App {
     },
   ];
 
-  networkLinks: NetworkLink[] = [
+  networkLinks: any[] = [
     { source: 'client', target: 'api' },
     { source: 'api', target: 'db' },
     { source: 'db', target: 'nodeA' },
     { source: 'db', target: 'nodeB' },
   ];
 
-  customConfig: NetworkConfig = {
+  customConfig: any = {
     nodeRadius: 20,
   };
 }

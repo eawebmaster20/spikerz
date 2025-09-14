@@ -1,37 +1,14 @@
 export interface NetworkNode {
   id: string;
   label: string;
-  type: 'client' | 'server' | 'database';
+  type: string;
   sublabel?: string;
-  description?: string;
   status?: string;
   hasWarning?: boolean;
+  description?: string;
+  iconUrl?: string;
   details?: { [key: string]: string };
-  // For compound nodes (two elements)
   children?: NetworkNode[];
-  parentId?: string; // for flattened children
-  iconUrl?: string; // URL for image-based node icon
-}
-
-export interface NetworkLink {
-  source: string;
-  target: string;
-}
-
-export interface NetworkConfig {
-  nodeRadius?: number;
-  linkDistance?: number;
-  chargeStrength?: number;
-  collisionRadius?: number;
-  colors?: {
-    client?: string;
-    server?: string;
-    database?: string;
-    warning?: string;
-  };
-  icons?: {
-    client?: string;
-    server?: string;
-    database?: string;
-  };
+  parentId?: string;
+  hoverCardHtml?: string; // Optional: custom HTML for hover card
 }

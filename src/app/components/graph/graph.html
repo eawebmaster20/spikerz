@@ -31,7 +31,7 @@
     <!-- Hover Card -->
     @if (hoveredNode) {
     <div
-      class="absolute z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl p-4 min-w-64 max-w-80 pointer-events-none transform -translate-x-1/2 -translate-y-full"
+      class="absolute z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl p-4 min-w-64 max-w-100 pointer-events-none transform -translate-x-1/2 -translate-y-full"
       [style.left.px]="hoverPosition.x"
       [style.top.px]="hoverPosition.y - 10"
     >
@@ -40,50 +40,14 @@
         class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"
       ></div>
 
-      <!-- Card Content -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="text-2xl">{{ getIcon(hoveredNode.type) }}</span>
-            <div>
-              <h3 class="font-semibold text-gray-900">{{ hoveredNode.label }}</h3>
-              @if (hoveredNode.sublabel) {
-              <p class="text-sm text-gray-500">
-                {{ hoveredNode.sublabel }}
-              </p>
-              }
-            </div>
-          </div>
-          <span
-            class="px-2 py-1 text-xs rounded-full"
-            [ngClass]="{
-              'bg-red-100 text-red-800': hoveredNode.hasWarning,
-              'bg-green-100 text-green-800': !hoveredNode.hasWarning
-            }"
-          >
-            {{ hoveredNode.status || 'Active' }}
-          </span>
-        </div>
-        @if (hoveredNode.description) {
-        <p class="text-sm text-gray-700">
-          {{ hoveredNode.description }}
-        </p>
-        } @if (hoveredNode.details) {
-        <div class="border-t border-gray-100 pt-3">
-          <h4 class="text-sm font-medium text-gray-900 mb-2">Details</h4>
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            @for (detail of getDetailsArray(hoveredNode.details); track $index) {
-            <ng-container>
-              <div class="flex justify-between">
-                <span class="text-gray-500 capitalize">{{ detail.key.replace('_', ' ') }}:</span>
-                <span class="text-gray-900 font-medium">{{ detail.value }}</span>
-              </div>
-            </ng-container>
-            }
-          </div>
-        </div>
-        }
+      <!-- Dynamic Card Content -->
+      @if(hoveredNode.hoverCardHtml){
+      <div [innerHTML]="hoveredNode.hoverCardHtml"></div>
+      }@else {
+      <div class="rounded-xl bg-gray-100 px-4 py-2 mb-2">
+        <span class="text-xl font-mono font-bold text-gray-700">{{ hoveredNode.label }}</span>
       </div>
+      }
     </div>
     }
   </div>
