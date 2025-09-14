@@ -26,7 +26,7 @@ export class Graph implements OnInit, OnDestroy, OnChanges {
   @Input() links: NetworkLink[] = [];
   @Input() config: NetworkConfig = {};
   @Input() width: number = 500;
-  @Input() height: number = 400;
+  @Input() height: number = 350;
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() classes?: string;
