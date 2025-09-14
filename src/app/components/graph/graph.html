@@ -29,8 +29,8 @@
       </span>
     </div>
     <!-- Hover Card -->
+    @if (hoveredNode) {
     <div
-      *ngIf="hoveredNode"
       class="absolute z-[9999] bg-white border border-gray-200 rounded-lg shadow-xl p-4 min-w-64 max-w-80 pointer-events-none transform -translate-x-1/2 -translate-y-full"
       [style.left.px]="hoverPosition.x"
       [style.top.px]="hoverPosition.y - 10"
@@ -47,9 +47,11 @@
             <span class="text-2xl">{{ getIcon(hoveredNode.type) }}</span>
             <div>
               <h3 class="font-semibold text-gray-900">{{ hoveredNode.label }}</h3>
-              <p *ngIf="hoveredNode.sublabel" class="text-sm text-gray-500">
+              @if (hoveredNode.sublabel) {
+              <p class="text-sm text-gray-500">
                 {{ hoveredNode.sublabel }}
               </p>
+              }
             </div>
           </div>
           <span
@@ -62,23 +64,27 @@
             {{ hoveredNode.status || 'Active' }}
           </span>
         </div>
-
-        <p *ngIf="hoveredNode.description" class="text-sm text-gray-700">
+        @if (hoveredNode.description) {
+        <p class="text-sm text-gray-700">
           {{ hoveredNode.description }}
         </p>
-
-        <div *ngIf="hoveredNode.details" class="border-t border-gray-100 pt-3">
+        } @if (hoveredNode.details) {
+        <div class="border-t border-gray-100 pt-3">
           <h4 class="text-sm font-medium text-gray-900 mb-2">Details</h4>
           <div class="grid grid-cols-2 gap-2 text-xs">
-            <ng-container *ngFor="let detail of getDetailsArray(hoveredNode.details)">
+            @for (detail of getDetailsArray(hoveredNode.details); track $index) {
+            <ng-container>
               <div class="flex justify-between">
                 <span class="text-gray-500 capitalize">{{ detail.key.replace('_', ' ') }}:</span>
                 <span class="text-gray-900 font-medium">{{ detail.value }}</span>
               </div>
             </ng-container>
+            }
           </div>
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 </div>
