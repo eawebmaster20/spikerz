@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+/* @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700&family=Inter:wght@400;700&display=swap'); */
+/* @import './custom-theme.scss'; */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: 'Public Sans', 'Inter', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
