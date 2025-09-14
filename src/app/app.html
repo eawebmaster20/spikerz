@@ -113,8 +113,10 @@
               <div class="flex gap-6">
                 <div class="flex-1">
                   <div class="bg-white rounded-lg p-2 shadow border-gray-200 border">
-                    <div class="flex justify-between py-2 border-b border-gray-200">
-                      <span>Asset</span>
+                    <div
+                      class="flex mx-2 text-gray-400 justify-between py-2 border-b border-gray-200"
+                    >
+                      <span class="">Asset</span>
                       <span class="">Contextual Risk</span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b border-gray-200">
@@ -161,30 +163,37 @@
                   </div>
                 </div>
                 <div
-                  class="font-inter w-64 flex items-center justify-center bg-white rounded-lg p-2 shadow border-gray-200 border"
+                  class="font-inter w-64 flex items-center flex-col bg-white rounded-lg p-2 shadow border-gray-200 border"
                 >
-                  <div class="flex flex-col leading-loose">
-                    <h4 class="text-gray-700 font-bold">Contextual Risk</h4>
-                    <ul class="text-xs space-y-3">
-                      <li class="text-red-700">
-                        ●
-                        <span class="text-gray-700"><span class="font-bold">2</span> Critical</span>
-                      </li>
-                      <li class="text-red-700">
-                        ● <span class="text-gray-700"><span class="font-bold">0</span> High</span>
-                      </li>
-                      <li class="text-yellow-600">
-                        ● <span class="text-gray-700"><span class="font-bold">0</span> Medium</span>
-                      </li>
-                      <li class="text-green-700">
-                        ● <span class="text-gray-700"><span class="font-bold">0</span> Low</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div
-                    class="w-24 h-24 rounded-full border-8 border-red-700 flex items-center justify-center text-3xl font-bold text-gray-500"
-                  >
-                    2
+                  <span class="flex flex-start w-full py-2 mb-4">
+                    <h4 class="text-gray-500 text-xl font-semibold">Contextual Risk</h4>
+                  </span>
+                  <div class="flex">
+                    <div class="flex flex-col leading-loose">
+                      <ul class="text-xs space-y-3">
+                        <li class="text-red-700">
+                          ●
+                          <span class="text-gray-700"
+                            ><span class="font-bold">2</span> Critical</span
+                          >
+                        </li>
+                        <li class="text-red-700">
+                          ● <span class="text-gray-700"><span class="font-bold">0</span> High</span>
+                        </li>
+                        <li class="text-yellow-600">
+                          ●
+                          <span class="text-gray-700"><span class="font-bold">0</span> Medium</span>
+                        </li>
+                        <li class="text-green-700">
+                          ● <span class="text-gray-700"><span class="font-bold">0</span> Low</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="w-24 h-24 rounded-full border-8 border-red-700 flex items-center justify-center text-3xl font-bold text-gray-500"
+                    >
+                      2
+                    </div>
                   </div>
                 </div>
               </div>
