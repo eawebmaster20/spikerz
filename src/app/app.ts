@@ -12,20 +12,20 @@ import { nodes } from './shared/data/graph';
   styleUrl: './app.css',
 })
 export class App {
-  hoveredMenu: string | null = null;
+  hoveredMenu = signal<string | null>(null);
   protected readonly title = signal('spikerz');
 
-  cardList = [{ title: 'Lorem P' }, { title: 'Lorem S' }, { title: 'Lorem T' }];
-  networkNodes: NetworkNode[] = nodes;
+  cardList = signal([{ title: 'Lorem P' }, { title: 'Lorem S' }, { title: 'Lorem T' }]);
+  networkNodes = signal<NetworkNode[]>(nodes);
 
-  networkLinks: any[] = [
+  networkLinks = signal<any[]>([
     { source: 'client', target: 'api' },
     { source: 'api', target: 'db' },
     { source: 'db', target: 'nodeA' },
     { source: 'db', target: 'nodeB' },
-  ];
+  ]);
 
-  customConfig: any = {
+  customConfig = signal<any>({
     nodeRadius: 20,
-  };
+  });
 }
